@@ -1,5 +1,6 @@
 <?php
-
+error_reporting(0);
+    ini_set('display_errors', 0);
 
 $retrieve_url = "http://palvelut2.tampere.fi/tietovaranto/tietovarantolista.php";
 $currentcountfilename = "lkm.txt";
