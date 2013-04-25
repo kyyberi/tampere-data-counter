@@ -1,11 +1,13 @@
 <?php
-error_reporting(0);
-    ini_set('display_errors', 0);
 
+// muutama asetus ettei tule turhia varoituksia sisällön merkkausongelmista
+error_reporting(0);
+ini_set('display_errors', 0);
+
+// muuttujia
 $retrieve_url = "http://palvelut2.tampere.fi/tietovaranto/tietovarantolista.php";
 $currentcountfilename = "lkm.txt";
 $jsonfile = "tampere.json";
-
 $now = mktime();
 
 
@@ -55,12 +57,24 @@ function appendJSON($newcount, $newdate, $filehd) {
 
 }
 
+// looppi jolla mennään alasivut läpi
 
+// esimerkki URL, jossa numero pitää kasvattaa kierros kierrokselta
+// http://palvelut2.tampere.fi/tietovaranto/tietovarantolista.php?alasivu=1
 
-  // new dom object
+$j = 1;
+$continue = true;
+// tietovarannot, kaikki yhteensä
+$sum = 0;
+
+while( $continue == true )
+{
+   // new dom object
   $dom = new DOMDocument();
-  
-  $content = file_get_contents($retrieve_url);
+  $curl = $retrieve_url.'?alasivu='.$j;
+  //echo $curl;
+  //echo "\n";
+  $content = file_get_contents($curl);
   //load the html
   $html = $dom->loadHTML($content);
 
@@ -79,13 +93,24 @@ function appendJSON($newcount, $newdate, $filehd) {
 	//echo $item->textContent;
 	
     } 
-   
-  // Kirjoita text filuun 
+  
+  if($i == 0) {
+	$continue = false;
+	// echo "\n";
+	// echo $sum;
+	// echo "\n";
+	// lopullinen määrä on tiedossa, kirjoita tiedostoon ja lisää objekti JSON:iin. 
+	outputFile($sum, $currentcountfilename, $now);
+	appendJSON($sum, $now, $jsonfile);
+  } else {
+	//echo "count: ".$i;
+        //echo "\n";
+        $sum = $sum + $i;
+  }
+  $j++;
+}
 
-   outputFile($i, $currentcountfilename, $now);
 
-  // lisää JSON objekti
-  appendJSON($i, $now, $jsonfile);
 ?>
 
 
