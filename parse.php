@@ -6,8 +6,8 @@ ini_set('display_errors', 0);
 
 // muuttujia
 $retrieve_url = "http://palvelut2.tampere.fi/tietovaranto/tietovarantolista.php";
-$currentcountfilename = "lkm.txt";
-$jsonfile = "tampere.json";
+$currentcountfilename = "/www/tampere/lkm.txt";
+$jsonfile = "/www/tampere/tietovarannot.json";
 $now = mktime();
 
 
